@@ -1,15 +1,17 @@
 import bdd
 
 class Appr:
-    base = bdd.BDD('kusanagi', 'root', '', 'localhost')
-    #base = bdd.BDD('kusanagi', 'root', 'root', 'localhost', port=8081)
+    # base = bdd.BDD('kusanagi', 'root', '', 'localhost')
+    base = bdd.BDD('kusanagi', 'root', 'root', 'localhost', port=8081)
     table = []
     def __init__(self, id):
-        colonnes = Appr.base.select("SHOW COLUMNS FROM apprenants")
         valeurs = Appr.base.select("SELECT * FROM `apprenants` WHERE id_apprenant = %s ORDER BY prenom, nom", id)
-        for i, valeur in enumerate(valeurs):
-            for attr_value in valeur:
-                setattr(self, colonnes[i][0], attr_value)
+        for valeur in valeurs:
+            self.id = valeur[0]
+            self.prenom = valeur[1]
+            self.nom = valeur[2]
+            self.pseudo = valeur[3]
+            self.email = valeur[4]
         Appr.table.insert(id, self)
     
     def save(self):
